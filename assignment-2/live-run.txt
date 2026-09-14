@@ -1,0 +1,17 @@
+LIVE — OpenWeatherMap current weather
+INFO | START order 1001 | New York
+INFO | START order 1002 | Mumbai
+INFO | START order 1003 | London
+INFO | START order 1004 | InvalidCity123
+INFO | DONE  order 1003 | London | Rain -> Delayed
+INFO | DONE  order 1002 | Mumbai | Rain -> Delayed
+ERROR | ERROR order 1004 | InvalidCity123 | HTTP 404: city not found; status unchanged
+INFO | DONE  order 1001 | New York | Clouds -> Pending
+
+Hi Bob, we're sorry—your order to Mumbai is delayed due to light rain. We appreciate your patience!
+
+Hi Charlie, we're sorry—your order to London is delayed due to light rain. We appreciate your patience!
+
+Processed 4 orders | 3 weather checks succeeded | 1 failed | 2 delay conditions matched
+Saved: orders.json
+Elapsed: 0.28s
