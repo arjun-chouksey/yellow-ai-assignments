@@ -1,0 +1,37 @@
+name: lead-sniper
+services:
+  state:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      STATE_DB: /data/lead-sniper.sqlite
+    volumes:
+      - state_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.38.6
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Run scripts/setup.py first}
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_SECURE_COOKIE: "false"
+      N8N_CONCURRENCY_PRODUCTION_LIMIT: "1"
+      EXECUTIONS_DATA_PRUNE: "true"
+      EXECUTIONS_DATA_MAX_AGE: "168"
+      GENERIC_TIMEZONE: Asia/Kolkata
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      state:
+        condition: service_healthy
+volumes:
+  n8n_data:
+  state_data:

@@ -1,0 +1,10 @@
+.env*
+.git
+workflows
+scripts
+tests
+*.md
+data
+
+**/__pycache__
+**/*.pyc
